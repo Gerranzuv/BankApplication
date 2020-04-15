@@ -1,0 +1,47 @@
+﻿@model BankApplication.Models.UserViewModel
+@{
+    ViewBag.Title = "User Profile";
+}
+
+<h2>Personal Info</h2>
+
+<div style="font-size:larger">
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Name</dt>
+        <dd>
+           @Model.Name
+        </dd>
+        <dt>Email</dt>
+        <dd>
+            @Model.Email
+        </dd>
+        <dt>Id</dt>
+        <dd>
+            @Model.UserId
+        </dd>
+        <dt>PN</dt>
+        <dd>
+            @Model.PN
+        </dd>
+        
+    </dl>
+
+    <div class="row">
+        <div class="col-md-4 text-center">
+            <p style="font-size:larger">Share 1</p>
+            <img style="height:250px;width:250px" src="~/Images/Dummy.png" />
+        </div>
+        <div class="col-md-4 text-center">
+            <p style="font-size:larger">Share 2</p>
+            <img style="height:250px;width:250px" src="~/Images/Dummy.png" />
+        </div>
+        <div class="col-md-4 text-cente">
+            <p style="font-size:larger">The Main Picture</p>
+            <img style="height:250px;width:250px" src="~/Images/Dummy.png" />
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

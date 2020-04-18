@@ -10,6 +10,9 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using BankApplication.Models;
 using System.IO;
+using BankApplication.Extra;
+using Microsoft.AspNet.Identity.EntityFramework;
+using BankApplication.ViewModel;
 
 namespace BankApplication.Controllers
 {
@@ -62,6 +65,13 @@ namespace BankApplication.Controllers
             return View();
         }
 
+        [AllowAnonymous]
+        public ActionResult AdminLogin(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            return View();
+        }
+
         //
         // POST: /Account/Login
         [HttpPost]
@@ -79,26 +89,94 @@ namespace BankApplication.Controllers
             {
                 return View(model);
             }
+            String stamp =  DateTime.Now.ToBinary().ToString();
 
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, change to shouldLockout: true
+            //Save the uploaded photo in temp folder
+            string path = Path.Combine(Server.MapPath("~/Temp"), stamp + upload.FileName);
+            upload.SaveAs(path);
+            
+            //Generate the two shares
+            VisualCryptographyLibrary.processing(path, "Temp/" + stamp);
+            
+            ComparisionViewModel res = new ComparisionViewModel();
+            res.Sahre1NewImage = stamp + VisualCryptographyLibrary.SHARE_1_NAME;
+            res.Sahre2NewImage = stamp + VisualCryptographyLibrary.SHARE_2_NAME;
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            switch (result)
-            {
-                case SignInStatus.Success:
-                    //return RedirectToLocal(returnUrl);
-                    return RedirectToAction("Profile");
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                    return View(model);
+            if (result.Equals(SignInStatus.Success)) {
+                res.passwordMatched = true;
+                //var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+
+                var user = db.Users.Where(a => a.Email.Equals(model.Email)).FirstOrDefault();
+                res.Sahre1Image = user.Sahre1Image;
+                res.Sahre2Image = user.Sahre2Image;
+                
+                res.share1Matched = VisualCryptographyLibrary.comparTwoPhotos(user.Sahre1Image, res.Sahre1NewImage);
+                res.share2Matched = VisualCryptographyLibrary.comparTwoPhotos(user.Sahre2Image, res.Sahre2NewImage);
+                res.processSuccesfful = res.share1Matched&&res.share1Matched&&res.passwordMatched;
+                if (!res.processSuccesfful)
+                {
+                    AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                }
             }
+            else {
+                res.passwordMatched = false;
+                res.Sahre1Image = "Dummy.png";
+                res.Sahre2Image = "Dummy.png";
+                res.share1Matched = false;
+                res.share2Matched = false;
+                res.processSuccesfful = false;
+            }
+            TempData["campare"] = res;
+            return RedirectToAction("Comparision");
+
         }
 
+        //
+        // GET: /Account/Comparision
+        [AllowAnonymous]
+        public ActionResult Comparision(ComparisionViewModel model)
+        {
+            ComparisionViewModel temp =(ComparisionViewModel) TempData["campare"];
+            return View(temp);
+        }
+
+
+        // POST: /Account/AdminLogin
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AdminLogin(LoginViewModel model, string returnUrl)
+        {
+            
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            
+
+            if (result.Equals(SignInStatus.Success)) {
+                var user = db.Users.Where(a => a.Email.Equals(model.Email)).FirstOrDefault();
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+                if (!userManager.IsInRole(user.Id,"Admin"))
+                {
+                    ModelState.AddModelError("", "This page is only for admins!");
+                    AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                    return View(model);
+                }
+                return RedirectToAction("UserList");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Invalid login attempt.");
+                return View(model);
+            }
+
+
+            
+        }
         //
         // GET: /Account/VerifyCode
         [AllowAnonymous]
@@ -164,12 +242,21 @@ namespace BankApplication.Controllers
             }
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser {  Email = model.Email };
                 user.UserId = model.UserId;
-                user.PN = model.PN;
-                string path = Path.Combine(Server.MapPath("~/App_Data"), upload.FileName);
+                user.FirstName = model.FirstName;
+                user.Email = model.Email;
+                user.LastName = model.LastName;
+                user.UserName = model.UserName;
+                user.PhoneNumber = model.PhoneNumber;
+                String stamp =  DateTime.Now.ToBinary().ToString();
+                string path = Path.Combine(Server.MapPath("~/App_Data"),stamp+ upload.FileName);
                 upload.SaveAs(path);
-                user.MainImage = upload.FileName;
+                user.MainImage = stamp+upload.FileName;
+                
+                VisualCryptographyLibrary.processing(path, "Images/"+ stamp);
+                user.Sahre1Image = stamp + VisualCryptographyLibrary.SHARE_1_NAME;
+                user.Sahre2Image = stamp + VisualCryptographyLibrary.SHARE_2_NAME;
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -183,6 +270,64 @@ namespace BankApplication.Controllers
 
                     //return RedirectToAction("Index", "Home");
                     return RedirectToAction("Profile");
+                }
+                AddErrors(result);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        //
+        // GET: /Account/CreateNewUser
+        [Authorize(Roles ="Admin")]
+        public ActionResult CreateNewUser()
+        {
+            return View();
+        }
+
+
+        // POST: /Account/CreateNewUser
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateNewUser(RegisterViewModel model, HttpPostedFileBase upload)
+        {
+            if (upload == null)
+            {
+                TempData["errMessage"] = "Please upload fingerprint photo!";
+                return View(model);
+            }
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { Email = model.Email };
+                user.UserId = model.UserId;
+                user.FirstName = model.FirstName;
+                user.Email = model.Email;
+                user.LastName = model.LastName;
+                user.UserName = model.UserName;
+                user.PhoneNumber = model.PhoneNumber;
+                String stamp = DateTime.Now.ToBinary().ToString();
+                string path = Path.Combine(Server.MapPath("~/App_Data"), stamp + upload.FileName);
+                upload.SaveAs(path);
+                user.MainImage = stamp + upload.FileName;
+
+                VisualCryptographyLibrary.processing(path, "Images/" + stamp);
+                user.Sahre1Image = stamp + VisualCryptographyLibrary.SHARE_1_NAME;
+                user.Sahre2Image = stamp + VisualCryptographyLibrary.SHARE_2_NAME;
+                var result = await UserManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    //await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
+                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
+                    // Send an email with this link
+                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+                    //return RedirectToAction("Index", "Home");
+                    return RedirectToAction("UserList");
                 }
                 AddErrors(result);
             }
@@ -445,7 +590,7 @@ namespace BankApplication.Controllers
         }
         public ActionResult UserList()
         {
-            var users = db.Users.ToList();
+            var users = db.Users.OrderBy(a=>a.FirstName).ToList();
             return View(users);
         }
 
@@ -521,7 +666,11 @@ namespace BankApplication.Controllers
                 Sahre1Image = user.Sahre1Image,
                 Sahre2Image = user.Sahre2Image,
                 PN = user.PN,
-                Name = user.UserName
+                Name = user.UserName,
+                FirstName = user.FirstName,
+                LastName=user.LastName,
+                PhoneNumber=user.PhoneNumber,
+                UserName=user.UserName
 
             };
             return View(model);

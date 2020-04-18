@@ -32,6 +32,13 @@ namespace BankApplication.Models
 
         [Display(Name = "Share2 Image")]
         public string Sahre2Image { get; set; }
+
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -46,5 +53,6 @@ namespace BankApplication.Models
             return new ApplicationDbContext();
         }
 
+        //public System.Data.Entity.DbSet<BankApplication.ViewModel.ComparisionViewModel> ComparisionViewModels { get; set; }
     }
 }

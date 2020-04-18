@@ -8,37 +8,53 @@
 <div style="font-size:larger">
     <hr />
     <dl class="dl-horizontal">
+
         <dt>Name</dt>
         <dd>
-           @Model.Name
+            @Model.FirstName + &nbsp; @Model.LastName
+        </dd>
+        <dt>UserName</dt>
+        <dd>
+           @Model.UserName
         </dd>
         <dt>Email</dt>
         <dd>
             @Model.Email
         </dd>
+        <dt>Phone Number</dt>
+        <dd>
+            @Model.PhoneNumber
+        </dd>
         <dt>Id</dt>
         <dd>
             @Model.UserId
         </dd>
-        <dt>PN</dt>
-        <dd>
-            @Model.PN
-        </dd>
+        
         
     </dl>
 
     <div class="row">
         <div class="col-md-4 text-center">
             <p style="font-size:larger">Share 1</p>
-            <img style="height:250px;width:250px" src="~/Images/Dummy.png" />
+            @{
+                var path = Path.Combine("/Images/", Model.Sahre1Image);
+                <img style="height:250px;width:250px" src="@path" />
+            }
+            
         </div>
         <div class="col-md-4 text-center">
             <p style="font-size:larger">Share 2</p>
-            <img style="height:250px;width:250px" src="~/Images/Dummy.png" />
+            @{
+                var path1 = Path.Combine("/Images/", Model.Sahre2Image);
+                <img style="height:250px;width:250px" src="@path1" />
+            }
         </div>
-        <div class="col-md-4 text-cente">
+        <div class="col-md-4 text-center">
             <p style="font-size:larger">The Main Picture</p>
-            <img style="height:250px;width:250px" src="~/Images/Dummy.png" />
+            @{
+                var path2 = Path.Combine("/App_Data/", Model.MainImage);
+                <img style="height:250px;width:250px" src="@path2" />
+            }
         </div>
     </div>
 </div>

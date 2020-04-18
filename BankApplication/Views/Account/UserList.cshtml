@@ -10,16 +10,29 @@
 <h1>UserList</h1>
 
 
+<p style="float:right;text-decoration-color:white;">
+
+    <button class="btn btn-primary btn-default" onclick="location.href='@Url.Action("CreateNewUser", "Account")'">
+        <i class="fa fa-plus-square pull-right" style="font-size:x-large"></i> Create New User
+    </button>
+
+</p>
+
+
+
 <table id="myTable" class="cell-border hover stripe" style="width:100%">
     <thead><tr>
+        <th>
+        Name
+    </th>
+        <th>
+        @Html.DisplayNameFor(model => model.PhoneNumber)
+    </th>
     <th>
         @Html.DisplayNameFor(model => model.UserName)
     </th>
     <th>
         @Html.DisplayNameFor(model => model.UserId)
-    </th>
-    <th>
-        @Html.DisplayNameFor(model => model.PN)
     </th>
 
     <th>
@@ -44,14 +57,18 @@
 {
     <tr>
         <td>
+            @item.FirstName&nbsp;@item.LastName
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PhoneNumber)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.UserName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.UserId)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PN)
-        </td>
+        
 
         <td>
             @Html.DisplayFor(modelItem => item.Email)

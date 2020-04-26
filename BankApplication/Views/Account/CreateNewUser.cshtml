@@ -1,81 +1,130 @@
 ﻿@model BankApplication.Models.RegisterViewModel
 @{
-    ViewBag.Title = "Register";
+    ViewBag.Title = "Add New User";
 }
 
-<h2>@ViewBag.Title.</h2>
+<head>
+    <title>
+        Add New User
+    </title>
+    <style>
+        .image-upload > input {
+            display: none;
+        }
+    </style>
+</head>
 
-@using (Html.BeginForm("CreateNewUser", "Account", FormMethod.Post,
-    new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
-{
-    @Html.AntiForgeryToken()
-    <h4>Create a new account.</h4>
-    <hr />
-    @Html.ValidationSummary("", new { @class = "text-danger" })
+<div class="row">
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+    <div class="col-md-6">
+        <div style="margin-top:30px;">
+            <img style="height:700px" src="~/Images/Register.PNG" />
         </div>
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.LastName, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+    <div class="col-md-6 text-center">
+        <div style="margin-top:50px;">
+            <p style="font-size:xx-large;font-weight:900">WELCOME ADMIN </p>
+            <p style="font-size:large;font-weight:400">Create your account, only takes a minute </p>
         </div>
+        <br />
+        <br />
+        @using (Html.BeginForm("CreateNewUser", "Account", FormMethod.Post,
+        new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary("", new { @class = "text-danger" })
+
+            <div class="form-group">
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control",
+                   placeholder = "First Name",
+                   @style = "margin-left: 20%;width: 120%;height: 40px;border-left-width:10px;border-left-color:blue;"
+               })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" ,
+                   placeholder = "Last Name",
+                   @style = "margin-left: 20%;width: 120%;height: 40px;border-left-width:10px;border-left-color:blue;"
+               })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control",
+                   placeholder = "UserName",
+                   @style = "margin-left: 20%;width: 120%;height: 40px;border-left-width:10px;border-left-color:blue;"
+               })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control",
+                   placeholder = "Email",
+                   @style = "margin-left: 20%;width: 120%;height: 40px;border-left-width:10px;border-left-color:blue;"
+               })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control",
+                   placeholder = "Phone Number",
+                   @style = "margin-left: 20%;width: 120%;height: 40px;border-left-width:10px;border-left-color:blue;"
+               })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control",
+                   placeholder = "Password",
+                   @style = "margin-left: 20%;width: 120%;height: 40px;border-left-width:10px;border-left-color:blue;"
+               })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control",
+                   placeholder = "Confirm Password",
+                   @style = "margin-left: 20%;width: 120%;height: 40px;border-left-width:10px;border-left-color:blue;"
+               })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.UserId, new { @class = "form-control",
+                   placeholder = "User Id",
+                   @style = "margin-left: 20%;width: 120%;height: 40px;border-left-width:10px;border-left-color:blue;"
+               })
+                </div>
+            </div>
+
+            <div class="form-group image-upload">
+                Fingerprint photo
+                <label for="imageFile">
+                    <img src="~/Images/finger.jpg" style="width:75px;height:75px;" />
+                </label>
+
+                <input id="imageFile" type="file" name="upload" />
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" class="btn btn-default" value="Register" />
+                </div>
+            </div>
+
+        }
+        
+
+
+
     </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.PhoneNumber, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.UserId, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.UserId, new { @class = "form-control" })
-        </div>
-    </div>
-    
-    <div class="form-group">
-        @Html.LabelFor(m => m.MainImage, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            <input type="file" name="upload" id="imageFile" />
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Register" />
-        </div>
-    </div>
-    
-}
+
+</div>
+
+
 <div class="row row-bottom-margin " style="margin-top:3%">
     <div class="text-center">
         <span class="alert-danger" role="alert" style="font-size:x-large">

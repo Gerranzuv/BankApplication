@@ -3,7 +3,15 @@
     ViewBag.Title = "User Profile";
 }
 
-<h2>Personal Info</h2>
+@if (User.Identity.IsAuthenticated==true && User.IsInRole("Admin")==true)
+{
+
+    <h2>Successfully Registration</h2>
+}
+else
+{
+    <h2>Personal Info</h2>
+}
 
 <div style="font-size:larger">
     <hr />
@@ -33,31 +41,51 @@
         
     </dl>
 
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <p style="font-size:larger">Share 1</p>
+                @{
+                    var path = Path.Combine("/Images/", Model.Sahre1Image);
+                    <img style="height:250px;width:250px" src="@path" />
+                }
+
+            </div>
+            <div class="col-md-4 text-center">
+                <p style="font-size:larger">Share 2</p>
+                @{
+                    var path1 = Path.Combine("/Images/", Model.Sahre2Image);
+                    <img style="height:250px;width:250px" src="@path1" />
+                }
+            </div>
+            <div class="col-md-4 text-center">
+                <p style="font-size:larger">The Main Picture</p>
+                @{
+                    var path2 = Path.Combine("/Images/", Model.MainImage);
+                    <img style="height:250px;width:250px" src="@path2" />
+                }
+            </div>
+        </div>
+                    }
+    <br />
+
+
     <div class="row">
-        <div class="col-md-4 text-center">
-            <p style="font-size:larger">Share 1</p>
-            @{
-                var path = Path.Combine("/Images/", Model.Sahre1Image);
-                <img style="height:250px;width:250px" src="@path" />
-            }
-            
-        </div>
-        <div class="col-md-4 text-center">
-            <p style="font-size:larger">Share 2</p>
-            @{
-                var path1 = Path.Combine("/Images/", Model.Sahre2Image);
-                <img style="height:250px;width:250px" src="@path1" />
-            }
-        </div>
-        <div class="col-md-4 text-center">
-            <p style="font-size:larger">The Main Picture</p>
-            @{
-                var path2 = Path.Combine("/App_Data/", Model.MainImage);
-                <img style="height:250px;width:250px" src="@path2" />
-            }
-        </div>
+
+        @if (User.IsInRole("Admin") == true)
+        {
+            <p style="float:left;text-decoration-color:white;">
+
+                <input type="button" class="btn btn-primary  " value="Back to User List" onclick="location.href='@Url.Action("UserList", "Account")'" />
+
+            </p>
+        }
     </div>
+    
 </div>
+
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

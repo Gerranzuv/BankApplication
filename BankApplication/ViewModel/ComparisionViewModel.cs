@@ -57,5 +57,11 @@ namespace BankApplication.ViewModel
         public bool passwordMatched { get; set; }
 
         public bool processSuccesfful { get; set; }
+
+        [Display(Name = "TempShare1")]
+        public string TempShare1 { get; set; }
+
+        [Display(Name = "TempShare2")]
+        public string TempShare2 { get; set; }
     }
 }

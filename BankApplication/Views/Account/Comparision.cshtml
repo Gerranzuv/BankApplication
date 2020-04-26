@@ -39,22 +39,22 @@
         <div class="col-md-4 text-center">
             <p style="font-size:larger">Share 1 New </p>
             @{
-                var path1 = Path.Combine("/Temp/", Model.Sahre1NewImage);
+                var path1 = Path.Combine("/Temp/", Model.TempShare1);
                 <img style="height:250px;width:250px" src="@path1" />
             }
         </div>
         <div class="col-md-4 text-center">
             @if (Model.share1Matched == true)
             {
-                <p style="font-size:larger">Matched</p>
-                var MatchedPathShare1 = Path.Combine("/Images/", "right.png");
-                <img style="height:250px;width:250px" src="@MatchedPathShare1" />
+                <p style="font-size:50px;padding-top:30%">Matched</p>
+                @*var MatchedPathShare1 = Path.Combine("/Images/", "right.png");
+                <img style="height:250px;width:250px" src="@MatchedPathShare1" />*@
             }
             else
             {
-                <p style="font-size:larger">Not Matched</p>
-                var MatchedPathShare1 = Path.Combine("/Images/", "wrong.png");
-                <img style="height:250px;width:250px" src="@MatchedPathShare1" />
+                <p style="font-size:50px;padding-top:30%">Not Matched</p>
+                @*var MatchedPathShare1 = Path.Combine("/Images/", "wrong.png");
+                <img style="height:250px;width:250px" src="@MatchedPathShare1" />*@
             }
         </div>
     </div>
@@ -74,22 +74,22 @@
         <div class="col-md-4 text-center">
             <p style="font-size:larger">Share 2 New </p>
             @{
-                var pathShare22 = Path.Combine("/Temp/", Model.Sahre2NewImage);
+                var pathShare22 = Path.Combine("/Temp/", Model.TempShare2);
                 <img style="height:250px;width:250px" src="@pathShare22" />
             }
         </div>
         <div class="col-md-4 text-center">
             @if (Model.share2Matched == true)
             {
-                <p style="font-size:larger">Matched</p>
-                var MatchedPathShare2 = Path.Combine("/Images/", "right.png");
-                <img style="height:250px;width:250px" src="@MatchedPathShare2" />
+                <p style="font-size:50px;padding-top:30%">Matched</p>
+                @*var MatchedPathShare2 = Path.Combine("/Images/", "right.png");
+                <img style="height:250px;width:250px" src="@MatchedPathShare2" />*@
             }
             else
             {
-                <p style="font-size:larger">Not Matched</p>
-                var MatchedPathShare2 = Path.Combine("/Images/", "wrong.png");
-                <img style="height:250px;width:250px" src="@MatchedPathShare2" />
+                <p style="font-size:50px;padding-top:30%">Not Matched</p>
+                @*var MatchedPathShare2 = Path.Combine("/Images/", "wrong.png");
+                <img style="height:250px;width:250px" src="@MatchedPathShare2" />*@
             }
 
         </div>

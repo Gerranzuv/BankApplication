@@ -21,7 +21,8 @@ namespace BankApplication.Extra
 
         public const string SHARE_1_NAME = "share1.jpg";
         public const string SHARE_2_NAME = "share2.jpg";
-
+        public const string TEMP_SHARE_1_NAME = "Tempshare1.bmp";
+        public const string TEMP_SHARE_2_NAME = "Tempshare2.bmp";
 
         public static void processing(String fullPath, String stamp)
         {
@@ -40,6 +41,8 @@ namespace BankApplication.Extra
             m_EncryptedImages = GenerateImage(source);
             m_EncryptedImages[0].Save(Path.Combine(HttpContext.Current.Server.MapPath("~/" + stamp + SHARE_1_NAME)), System.Drawing.Imaging.ImageFormat.Jpeg);
             m_EncryptedImages[1].Save(Path.Combine(HttpContext.Current.Server.MapPath("~/" + stamp + SHARE_2_NAME)), System.Drawing.Imaging.ImageFormat.Jpeg);
+            m_EncryptedImages[0].Save(Path.Combine(HttpContext.Current.Server.MapPath("~/" + stamp + TEMP_SHARE_1_NAME)));
+            m_EncryptedImages[1].Save(Path.Combine(HttpContext.Current.Server.MapPath("~/" + stamp + TEMP_SHARE_2_NAME)));
         }
 
         public static bool comparTwoPhotos(string path1, string path2)
@@ -243,6 +246,35 @@ namespace BankApplication.Extra
             }
 
             return true;
+        }
+
+        public static void saveFinalImage()
+        {
+            if (m_EncryptedImages != null)
+            {
+                Bitmap source = new Bitmap(m_EncryptedImages[0].Width, m_EncryptedImages[0].Height);
+                Graphics g = Graphics.FromImage(source);
+                Rectangle rect = new Rectangle(0, 0, 0, 0);
+                for (int i = 0; i < m_EncryptedImages.Length; i++)
+                {
+                    rect.Size = m_EncryptedImages[i].Size;
+                    g.DrawImage(m_EncryptedImages[i], rect);
+                    rect.Y += m_EncryptedImages[i].Height + 5;
+                }
+
+                g.DrawLine(new Pen(new SolidBrush(Color.Black), 1), rect.Location, new Point(rect.Width, rect.Y));
+                rect.Y += 5;
+
+                for (int i = 0; i < m_EncryptedImages.Length; i++)
+                {
+                    rect.Size = m_EncryptedImages[i].Size;
+                    g.DrawImage(m_EncryptedImages[i], rect);
+                }
+
+                Bitmap b = new Bitmap(m_EncryptedImages[0].Width, m_EncryptedImages[0].Height,g);
+                b.Save(Path.Combine(HttpContext.Current.Server.MapPath("~/Images/" + "Test.bmp")));
+                source.Save(Path.Combine(HttpContext.Current.Server.MapPath("~/Images/" + "BTest.bmp")));
+            }
         }
     }
 }

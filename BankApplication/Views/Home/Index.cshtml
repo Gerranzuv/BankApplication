@@ -2,11 +2,11 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
+@*<div class="jumbotron">
     <h1>Welcome to Secure Bank Application</h1>
     <p class="lead">An application that uses visual cryptography to verify users</p>
     <p><a href="https://en.wikipedia.org/wiki/Visual_cryptography" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
+</div>*@
 
 @*<div class="row">
     <div class="col-md-4">
@@ -30,7 +30,7 @@
     </div>
 </div>*@
 
-<div class="row">
+@*<div class="row">
     <div class="col-md-2"></div>
     <div class="col-md-8 text-center">
         <button class="btn btn-primary text-center" 
@@ -44,4 +44,48 @@
         </button>
 </div>
     <div class="col-md-2"></div>
+</div>*@
+
+<div class="row">
+
+    <div class="col-md-6">
+        <div style="margin-top:30px;">
+            <img style="height:700px" src="~/Images/1.PNG" />
+        </div>
+    </div>
+
+    <div class="col-md-6 text-center">
+        <div style="margin-top:100px;">
+            <p style="font-size:xx-large;font-weight:900">WELCOME TO SECURE BANK APPLICATION </p>
+        </div>
+        <br />
+        <br />
+        <br />
+        <div style="margin-top:80px">
+            <p style="font-size:xx-large;font-weight:900;">User Login
+                <a href="@Url.Action("Login","Account")">
+                    <img src="~/Images/login.png" style="width:50px;height:50px" class="logo-size" />
+                </a>
+            </p>
+            
+        </div>
+        <div style="margin-top:80px">
+            <p style="font-size:xx-large;font-weight:900;">Admin Login
+                <a href="@Url.Action("AdminLogin","Account")">
+                    <img src="~/Images/login.png" style="width:50px;height:50px" class="logo-size" />
+                </a>
+            </p>
+        </div>
+
+        <div style="margin-top:80px">
+            <p style="font-size:xx-large;font-weight:900;">
+                Login Method 2
+                <a href="@Url.Action("Login2","Account")">
+                    <img src="~/Images/login.png" style="width:50px;height:50px" class="logo-size" />
+                </a>
+            </p>
+        </div>
+
+    </div>
+
 </div>

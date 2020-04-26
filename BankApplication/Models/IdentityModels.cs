@@ -39,6 +39,12 @@ namespace BankApplication.Models
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
+        [Display(Name = "TempShare1")]
+        public string TempShare1 { get; set; }
+
+        [Display(Name = "TempShare2")]
+        public string TempShare2 { get; set; }
+
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

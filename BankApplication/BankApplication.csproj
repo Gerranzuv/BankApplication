@@ -205,6 +205,10 @@
     <Compile Include="Migrations\202004151855521_userModifications.Designer.cs">
       <DependentUpon>202004151855521_userModifications.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004221226429_tempShare.cs" />
+    <Compile Include="Migrations\202004221226429_tempShare.Designer.cs">
+      <DependentUpon>202004221226429_tempShare.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -220,7 +224,12 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\1.PNG" />
+    <Content Include="Images\admin.PNG" />
     <Content Include="Images\Dummy.png" />
+    <Content Include="Images\finger.jpg" />
+    <Content Include="Images\login.png" />
+    <Content Include="Images\Register.PNG" />
     <Content Include="Images\right.png" />
     <Content Include="Images\test.jpg" />
     <Content Include="Images\wrong.png" />
@@ -282,6 +291,7 @@
     <Content Include="Views\Account\AdminLogin.cshtml" />
     <Content Include="Views\Account\Comparision.cshtml" />
     <Content Include="Views\Account\CreateNewUser.cshtml" />
+    <Content Include="Views\Account\Login2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -306,6 +316,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004151855521_userModifications.resx">
       <DependentUpon>202004151855521_userModifications.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004221226429_tempShare.resx">
+      <DependentUpon>202004221226429_tempShare.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

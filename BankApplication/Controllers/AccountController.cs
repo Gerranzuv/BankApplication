@@ -722,7 +722,8 @@ namespace BankApplication.Controllers
             res.Sahre2NewImage = stamp + VisualCryptographyLibrary.SHARE_2_NAME;
             res.TempShare1 = stamp + VisualCryptographyLibrary.TEMP_SHARE_1_NAME;
             res.TempShare2 = stamp + VisualCryptographyLibrary.TEMP_SHARE_2_NAME;
-            VisualCryptographyLibrary.saveFinalImage();
+            
+            res.newFinalImage = stamp + "BTest.bmp";
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
             if (result.Equals(SignInStatus.Success))
             {
@@ -736,6 +737,7 @@ namespace BankApplication.Controllers
                 res.share1Matched = VisualCryptographyLibrary.comparTwoPhotos(user.Sahre1Image, res.Sahre1NewImage);
                 res.share2Matched = VisualCryptographyLibrary.comparTwoPhotos(user.Sahre2Image, res.Sahre2NewImage);
                 res.processSuccesfful = res.share1Matched && res.share1Matched && res.passwordMatched;
+                VisualCryptographyLibrary.saveFinalImage(stamp,user.TempShare1,user.TempShare2);
                 res.Sahre1Image = user.TempShare1;
                 res.Sahre2Image = user.TempShare2;
                 if (!res.processSuccesfful)
@@ -753,7 +755,7 @@ namespace BankApplication.Controllers
                 res.processSuccesfful = false;
             }
             TempData["campare"] = res;
-            return RedirectToAction("Comparision");
+            return RedirectToAction("Comparision2");
 
         }
 
@@ -765,5 +767,14 @@ namespace BankApplication.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
+
+        // GET: /Account/Comparision
+        [AllowAnonymous]
+        public ActionResult Comparision2(ComparisionViewModel model)
+        {
+            ComparisionViewModel temp = (ComparisionViewModel)TempData["campare"];
+            return View(temp);
+        }
+
     }
 }

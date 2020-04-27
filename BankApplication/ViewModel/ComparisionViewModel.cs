@@ -63,5 +63,7 @@ namespace BankApplication.ViewModel
 
         [Display(Name = "TempShare2")]
         public string TempShare2 { get; set; }
+
+        public string newFinalImage { get; set; }
     }
 }

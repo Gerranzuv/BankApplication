@@ -292,6 +292,7 @@
     <Content Include="Views\Account\Comparision.cshtml" />
     <Content Include="Views\Account\CreateNewUser.cshtml" />
     <Content Include="Views\Account\Login2.cshtml" />
+    <Content Include="Views\Account\Comparision2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

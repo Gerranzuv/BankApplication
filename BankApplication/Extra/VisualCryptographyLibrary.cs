@@ -248,32 +248,53 @@ namespace BankApplication.Extra
             return true;
         }
 
-        public static void saveFinalImage()
+        //public static void saveFinalImage()
+        //{
+        //    if (m_EncryptedImages != null)
+        //    {
+        //        Bitmap source = new Bitmap(m_EncryptedImages[0].Width, m_EncryptedImages[0].Height);
+        //        Graphics g = Graphics.FromImage(source);
+        //        Rectangle rect = new Rectangle(0, 0, 0, 0);
+        //        for (int i = 0; i < m_EncryptedImages.Length; i++)
+        //        {
+        //            rect.Size = m_EncryptedImages[i].Size;
+        //            g.DrawImage(m_EncryptedImages[i], rect);
+        //            rect.Y += m_EncryptedImages[i].Height + 5;
+        //        }
+
+        //        g.DrawLine(new Pen(new SolidBrush(Color.Black), 1), rect.Location, new Point(rect.Width, rect.Y));
+        //        rect.Y += 5;
+
+        //        for (int i = 0; i < m_EncryptedImages.Length; i++)
+        //        {
+        //            rect.Size = m_EncryptedImages[i].Size;
+        //            g.DrawImage(m_EncryptedImages[i], rect);
+        //        }
+
+        //        Bitmap b = new Bitmap(m_EncryptedImages[0].Width, m_EncryptedImages[0].Height,g);
+        //        b.Save(Path.Combine(HttpContext.Current.Server.MapPath("~/Images/" + "Test.bmp")));
+        //        source.Save(Path.Combine(HttpContext.Current.Server.MapPath("~/Images/" + "BTest.bmp")));
+        //    }
+        //}
+
+        public static void saveFinalImage( string stamp,string path1,string path2)
         {
+            string orginalPath = Path.Combine(HttpContext.Current.Server.MapPath("~/Images"), path1);
+            string temppath = Path.Combine(HttpContext.Current.Server.MapPath("~/Images"), path2);
+            Bitmap orginalImage = ConvertToBitmap(orginalPath);
+            Bitmap newImage = ConvertToBitmap(temppath);
             if (m_EncryptedImages != null)
             {
                 Bitmap source = new Bitmap(m_EncryptedImages[0].Width, m_EncryptedImages[0].Height);
-                Graphics g = Graphics.FromImage(source);
-                Rectangle rect = new Rectangle(0, 0, 0, 0);
-                for (int i = 0; i < m_EncryptedImages.Length; i++)
+                using (var g = Graphics.FromImage(source))
                 {
-                    rect.Size = m_EncryptedImages[i].Size;
-                    g.DrawImage(m_EncryptedImages[i], rect);
-                    rect.Y += m_EncryptedImages[i].Height + 5;
+                    g.DrawImage(orginalImage, 0, 0);
+                    g.DrawImage(newImage, 0, 0);
                 }
 
-                g.DrawLine(new Pen(new SolidBrush(Color.Black), 1), rect.Location, new Point(rect.Width, rect.Y));
-                rect.Y += 5;
-
-                for (int i = 0; i < m_EncryptedImages.Length; i++)
-                {
-                    rect.Size = m_EncryptedImages[i].Size;
-                    g.DrawImage(m_EncryptedImages[i], rect);
-                }
-
-                Bitmap b = new Bitmap(m_EncryptedImages[0].Width, m_EncryptedImages[0].Height,g);
-                b.Save(Path.Combine(HttpContext.Current.Server.MapPath("~/Images/" + "Test.bmp")));
-                source.Save(Path.Combine(HttpContext.Current.Server.MapPath("~/Images/" + "BTest.bmp")));
+                //Bitmap b = new Bitmap(m_EncryptedImages[0].Width, m_EncryptedImages[0].Height, g);
+                //b.Save(Path.Combine(HttpContext.Current.Server.MapPath("~/Images/" + "Test.bmp")));
+                source.Save(Path.Combine(HttpContext.Current.Server.MapPath("~/Temp/"+stamp + "BTest.bmp")));
             }
         }
     }

@@ -1,0 +1,81 @@
+﻿@model BankApplication.ViewModel.ComparisionViewModel
+
+@{
+    ViewBag.Title = "Comparision";
+}
+
+<div class="text-center"><h1>Login Process</h1></div>
+<br />
+<div>
+    <div class="row text-center">
+        <div class="col-md-4" style="font-size:x-large">
+            <span class="label label-info" style="font-size:large">Password Status:</span>
+</div>
+        <div class="col-md-4" style="font-size:x-large">
+            @if (Model.passwordMatched == true)
+            {
+               <p class="alert-success">Matched</p>
+            }
+            else
+            {
+                <p>Not Matched</p>
+            }
+        </div>
+
+        <div class="col-md-4" style="font-size:x-large">
+            
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-4 text-center">
+            <p style="font-size:larger">Share 1</p>
+            @{
+                var path = Path.Combine("/Images/", Model.Sahre1Image);
+                <img style="height:250px;width:250px" src="@path" />
+            }
+
+        </div>
+        <div class="col-md-4 text-center">
+            <p style="font-size:larger">Share 2 New </p>
+            @{
+                var pathShare22 = Path.Combine("/Temp/", Model.TempShare2);
+                <img style="height:250px;width:250px" src="@pathShare22" />
+            }
+        </div>
+        <div class="col-md-4 text-center">
+            <p style="font-size:larger">Share 1 + Share 2 New  </p>
+            @{
+                var pathShare = Path.Combine("/Temp/", Model.newFinalImage);
+                <img style="height:250px;width:250px" src="@pathShare" />
+            }
+        </div>
+    </div>
+
+
+
+    <br /><br />
+    
+
+    <br />
+    <br />
+    <br />
+    @if (Model.processSuccesfful==true)
+    {
+
+        <p style="float:right;text-decoration-color:white;">
+
+            <input type="button" class="btn btn-primary  " value="Continue to your profile" onclick="location.href='@Url.Action("Profile", "Account")'" />
+
+        </p>
+    }
+
+    <p style="float:left;text-decoration-color:white;">
+
+        <input type="button" class="btn btn-primary  " value="Back to Login" onclick="location.href='@Url.Action("Login", "Account")'" />
+
+    </p>
+
+    <br />
+    <br />
+</div>

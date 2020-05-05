@@ -51,6 +51,19 @@
             }
         </div>
     </div>
+    <br />
+    <div class="row">
+        <div class="col-md-4 text-center">
+            <div class="col-md-4 text-center"></div>
+            <p style="font-size:larger">Main Image </p>
+            @{
+                var pathShare2 = Path.Combine("/Temp/", Model.MainImage);
+                <img style="height:250px;width:250px" src="@pathShare2" />
+            }
+        </div>
+        
+        <div class="col-md-4 text-center"></div>
+        </div>
 
 
 

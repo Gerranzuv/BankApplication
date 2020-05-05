@@ -11,6 +11,14 @@
         .image-upload > input {
             display: none;
         }
+
+        .dvPreview {
+            filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=image);
+            min-height: 400px;
+            min-width: 400px;
+            display: none;
+        }
+    
     </style>
 </head>
 
@@ -25,7 +33,7 @@
     <div class="col-md-6 text-center">
         <div style="margin-top:100px;">
             <p style="font-size:xx-large;font-weight:900">WELCOME TO SECURE BANK APPLICATION </p>
-            <p style="font-size:large;font-weight:400">Please enter either username and password </p>
+            <p style="font-size:large;font-weight:400">Please enter username, password and fingerprint photo </p>
         </div>
         <br />
         <br />
@@ -70,15 +78,12 @@
 
                         <input id="imageFile" type="file" name="upload" />
                     </div>
+
                     
-                    @*<div class="form-group">
-                        <div class="col-md-offset-2">
-                            <div class="checkbox">
-                                @Html.CheckBoxFor(m => m.RememberMe)
-                                @Html.LabelFor(m => m.RememberMe)
-                            </div>
-                        </div>
-                    </div>*@
+              
+                    <div id="dvPreview">
+                    </div>
+                    <br />
                     <div class="form-group">
                         <div class="col-md-offset-2 ">
                             <input type="submit" value="Log in" class="btn btn-default" />
@@ -103,4 +108,36 @@
     </div>
     @section Scripts {
         @Scripts.Render("~/bundles/jqueryval")
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script language="javascript" type="text/javascript">
+$(function () {
+    $("#imageFile").change(function () {
+        $("#dvPreview").html("");
+        var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.jpg|.jpeg|.gif|.png|.bmp)$/;
+        if (regex.test($(this).val().toLowerCase())) {
+            if ($.browser.msie && parseFloat(jQuery.browser.version) <= 9.0) {
+                $("#dvPreview").show();
+                $("#dvPreview")[0].filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = $(this).val();
+            }
+            else {
+                if (typeof (FileReader) != "undefined") {
+                    $("#dvPreview").show();
+                    $("#dvPreview").append("<img />");
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $("#dvPreview img").attr("src", e.target.result);
+                        $("#dvPreview img").attr("style", "width:75px;height:75px;");
+                    }
+                    reader.readAsDataURL($(this)[0].files[0]);
+                } else {
+                    alert("This browser does not support FileReader.");
+                }
+            }
+        } else {
+            alert("Please upload a valid image file.");
+        }
+    });
+});
+</script>
     }

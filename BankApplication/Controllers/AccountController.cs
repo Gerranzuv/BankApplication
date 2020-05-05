@@ -308,7 +308,7 @@ namespace BankApplication.Controllers
             }
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { Email = model.Email };
+                var user = new ApplicationUser();
                 user.UserId = model.UserId;
                 user.FirstName = model.FirstName;
                 user.Email = model.Email;
@@ -716,8 +716,9 @@ namespace BankApplication.Controllers
 
             //Generate the two shares
             VisualCryptographyLibrary.processing(path, "Temp/" + stamp);
-
+            
             ComparisionViewModel res = new ComparisionViewModel();
+            res.MainImage = stamp + upload.FileName;
             res.Sahre1NewImage = stamp + VisualCryptographyLibrary.SHARE_1_NAME;
             res.Sahre2NewImage = stamp + VisualCryptographyLibrary.SHARE_2_NAME;
             res.TempShare1 = stamp + VisualCryptographyLibrary.TEMP_SHARE_1_NAME;
